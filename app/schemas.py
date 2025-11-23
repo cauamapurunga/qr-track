@@ -75,14 +75,15 @@ class DeviceStats(BaseModel):
     count: int
 
 
-class CountryStats(BaseModel):
-    name: str
-    count: int
-
-
 class CityStats(BaseModel):
     name: str
     count: int
+
+
+class CountryStats(BaseModel):
+    name: str
+    count: int
+    top_cities: list[CityStats]
 
 
 class AnalyticsResponse(BaseModel):
@@ -94,4 +95,3 @@ class AnalyticsResponse(BaseModel):
     top_os: list[OSStats]
     top_devices: list[DeviceStats]
     top_countries: list[CountryStats]
-    top_cities: list[CityStats]

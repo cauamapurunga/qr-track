@@ -140,6 +140,5 @@ def get_qr_analytics(
         top_browsers=analytics["top_browsers"],
         top_os=analytics["top_os"],
         top_devices=analytics["top_devices"],
-        top_countries=analytics["top_countries"],
-        top_cities=analytics["top_cities"]
+        top_countries=analytics["top_countries"]
     )

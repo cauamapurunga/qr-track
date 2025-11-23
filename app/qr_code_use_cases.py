@@ -155,13 +155,21 @@ class QRCodeUseCases:
         device_counter = Counter(scan.device for scan in scans if scan.device)
         top_devices = [{"type": device, "count": count} for device, count in device_counter.most_common(5)]
         
-        # Top countries
+        # Top countries com suas cidades
         country_counter = Counter(scan.country for scan in scans if scan.country)
-        top_countries = [{"name": name, "count": count} for name, count in country_counter.most_common(5)]
+        top_countries = []
         
-        # Top cities
-        city_counter = Counter(scan.city for scan in scans if scan.city)
-        top_cities = [{"name": name, "count": count} for name, count in city_counter.most_common(5)]
+        for country_name, country_count in country_counter.most_common(5):
+            # Pega cidades deste país
+            country_scans = [scan for scan in scans if scan.country == country_name and scan.city]
+            city_counter = Counter(scan.city for scan in country_scans)
+            top_cities = [{"name": city, "count": count} for city, count in city_counter.most_common(3)]
+            
+            top_countries.append({
+                "name": country_name,
+                "count": country_count,
+                "top_cities": top_cities
+            })
         
         return {
             "qr_code": qr_code,
@@ -169,8 +177,7 @@ class QRCodeUseCases:
             "top_browsers": top_browsers,
             "top_os": top_os,
             "top_devices": top_devices,
-            "top_countries": top_countries,
-            "top_cities": top_cities
+            "top_countries": top_countries
         }
     
     def delete_qr_code(self, code: str, user_id: int):

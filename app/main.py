@@ -1,6 +1,9 @@
 from fastapi import FastAPI
 from app.routes import router as user_router
 from app.qr_routes import router as qr_router, redirect_router, analytics_router
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = FastAPI(
     title="QRTrack API",

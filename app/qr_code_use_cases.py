@@ -69,6 +69,14 @@ class QRCodeUseCases:
     
     def _get_ip_geolocation(self, ip_address: str, api_key: str) -> dict:
         import requests
+        
+        if not api_key:
+            return {}
+        
+        # Se for localhost, usa um IP público brasileiro para teste
+        if ip_address in ["127.0.0.1", "::1", "localhost"]:
+            ip_address = "200.98.196.114"
+        
         try:
             response = requests.get(f"https://api.ipgeolocation.io/ipgeo?apiKey={api_key}&ip={ip_address}")
             if response.status_code == 200:
@@ -83,6 +91,7 @@ class QRCodeUseCases:
                 }
         except:
             pass
+        
         return {}
     
     def process_scan(self, code: str, ip_address: str, user_agent: str, api_key: str = None) -> str:

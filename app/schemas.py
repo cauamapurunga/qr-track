@@ -48,6 +48,12 @@ class ScanAnalytic(BaseModel):
     os: str | None
     os_version: str | None
     device: str | None
+    country: str | None
+    city: str | None
+    latitude: str | None
+    longitude: str | None
+    timezone: str | None
+    isp: str | None
     scanned_at: str
     
     class Config:
@@ -69,6 +75,16 @@ class DeviceStats(BaseModel):
     count: int
 
 
+class CountryStats(BaseModel):
+    name: str
+    count: int
+
+
+class CityStats(BaseModel):
+    name: str
+    count: int
+
+
 class AnalyticsResponse(BaseModel):
     qr_code: QRCodeResponse
     total_scans: int
@@ -77,3 +93,5 @@ class AnalyticsResponse(BaseModel):
     top_browsers: list[BrowserStats]
     top_os: list[OSStats]
     top_devices: list[DeviceStats]
+    top_countries: list[CountryStats]
+    top_cities: list[CityStats]

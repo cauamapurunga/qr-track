@@ -37,7 +37,7 @@ class ScanAnalyticsModel(Base):
     
     # Dados coletados automaticamente
     ip_address = Column(String, nullable=False)
-    user_agent = Column(String, nullable=False)  # String completa do user agent
+    user_agent = Column(String, nullable=False)
     
     # Dados processados do user agent
     browser = Column(String)
@@ -45,6 +45,14 @@ class ScanAnalyticsModel(Base):
     os = Column(String)
     os_version = Column(String)
     device = Column(String)
+    
+    # Dados de geolocalização (ipgeolocation.io)
+    country = Column(String)
+    city = Column(String)
+    latitude = Column(String)
+    longitude = Column(String)
+    timezone = Column(String)
+    isp = Column(String)
     
     scanned_at = Column(DateTime, default=datetime.utcnow, nullable=False)
     

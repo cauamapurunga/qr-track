@@ -81,11 +81,14 @@ def redirect_and_track(
     db_session: Session = Depends(get_db_session)
 ):
     """Captura analytics e redireciona para URL de destino"""
+    import os
+    
     ip_address = request.client.host
     user_agent = request.headers.get("user-agent", "Unknown")
+    api_key = os.getenv("IPGEOLOCATION_API_KEY")
     
     uc = QRCodeUseCases(db_session=db_session)
-    destination_url = uc.process_scan(code, ip_address, user_agent)
+    destination_url = uc.process_scan(code, ip_address, user_agent, api_key)
     
     return RedirectResponse(url=destination_url, status_code=status.HTTP_302_FOUND)
 
@@ -112,6 +115,12 @@ def get_qr_analytics(
             os=scan.os,
             os_version=scan.os_version,
             device=scan.device,
+            country=scan.country,
+            city=scan.city,
+            latitude=scan.latitude,
+            longitude=scan.longitude,
+            timezone=scan.timezone,
+            isp=scan.isp,
             scanned_at=scan.scanned_at.isoformat()
         )
         for scan in qr_code.scans
@@ -130,5 +139,7 @@ def get_qr_analytics(
         scans=scans_data,
         top_browsers=analytics["top_browsers"],
         top_os=analytics["top_os"],
-        top_devices=analytics["top_devices"]
+        top_devices=analytics["top_devices"],
+        top_countries=analytics["top_countries"],
+        top_cities=analytics["top_cities"]
     )

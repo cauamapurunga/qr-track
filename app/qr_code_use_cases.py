@@ -67,7 +67,25 @@ class QRCodeUseCases:
         
         return buf
     
-    def process_scan(self, code: str, ip_address: str, user_agent: str) -> str:
+    def _get_ip_geolocation(self, ip_address: str, api_key: str) -> dict:
+        import requests
+        try:
+            response = requests.get(f"https://api.ipgeolocation.io/ipgeo?apiKey={api_key}&ip={ip_address}")
+            if response.status_code == 200:
+                data = response.json()
+                return {
+                    "country": data.get("country_name"),
+                    "city": data.get("city"),
+                    "latitude": data.get("latitude"),
+                    "longitude": data.get("longitude"),
+                    "timezone": data.get("time_zone", {}).get("name"),
+                    "isp": data.get("isp")
+                }
+        except:
+            pass
+        return {}
+    
+    def process_scan(self, code: str, ip_address: str, user_agent: str, api_key: str = None) -> str:
         qr_code = self.db_session.query(QRCodeModel).filter_by(code=code).first()
         
         if not qr_code:
@@ -78,6 +96,10 @@ class QRCodeUseCases:
         
         ua = parse(user_agent)
         
+        geo_data = {}
+        if api_key:
+            geo_data = self._get_ip_geolocation(ip_address, api_key)
+        
         scan = ScanAnalyticsModel(
             qr_code_id=qr_code.id,
             ip_address=ip_address,
@@ -86,7 +108,13 @@ class QRCodeUseCases:
             browser_version=ua.browser.version_string,
             os=ua.os.family,
             os_version=ua.os.version_string,
-            device=ua.device.family
+            device=ua.device.family,
+            country=geo_data.get("country"),
+            city=geo_data.get("city"),
+            latitude=geo_data.get("latitude"),
+            longitude=geo_data.get("longitude"),
+            timezone=geo_data.get("timezone"),
+            isp=geo_data.get("isp")
         )
         
         self.db_session.add(scan)
@@ -127,12 +155,22 @@ class QRCodeUseCases:
         device_counter = Counter(scan.device for scan in scans if scan.device)
         top_devices = [{"type": device, "count": count} for device, count in device_counter.most_common(5)]
         
+        # Top countries
+        country_counter = Counter(scan.country for scan in scans if scan.country)
+        top_countries = [{"name": name, "count": count} for name, count in country_counter.most_common(5)]
+        
+        # Top cities
+        city_counter = Counter(scan.city for scan in scans if scan.city)
+        top_cities = [{"name": name, "count": count} for name, count in city_counter.most_common(5)]
+        
         return {
             "qr_code": qr_code,
             "unique_visitors": unique_ips,
             "top_browsers": top_browsers,
             "top_os": top_os,
-            "top_devices": top_devices
+            "top_devices": top_devices,
+            "top_countries": top_countries,
+            "top_cities": top_cities
         }
     
     def delete_qr_code(self, code: str, user_id: int):

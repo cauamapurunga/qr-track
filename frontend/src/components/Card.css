@@ -1,0 +1,13 @@
+.card {
+  background-color: var(--color-white);
+  border-radius: 0;
+  padding: var(--spacing-xl);
+  box-shadow: 6px 6px 0px 0px var(--color-black);
+  border: 2px solid var(--color-black);
+}
+
+@media (max-width: 768px) {
+  .card {
+    padding: var(--spacing-lg);
+  }
+}

@@ -9,7 +9,7 @@ export const Modal = ({
   message,
   confirmText = 'Confirmar',
   cancelText = 'Cancelar'
-}) => {
+}: any) => {
   if (!isOpen) return null;
 
   return (

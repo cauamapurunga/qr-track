@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Button, Input, Card } from '../components';
+import { Button, Input, Card, Logo } from '../components';
 import './Login.css';
 
 export const Login = () => {
@@ -71,6 +71,9 @@ export const Login = () => {
     <div className="auth-container">
       <div className="auth-content">
         <div className="auth-header">
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 'var(--spacing-lg)' }}>
+            <Logo size={80} />
+          </div>
           <h1>
             Bem-vindo ao <span className="text-primary">QRTrack</span>
           </h1>

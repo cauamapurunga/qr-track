@@ -1,7 +1,7 @@
 import api from './api';
 
 export const authService = {
-  async register(userData) {
+  async register(userData: any) {
     try {
       const response = await api.post('/users/register', userData);
       return response.data;
@@ -10,7 +10,7 @@ export const authService = {
     }
   },
 
-  async login(credentials) {
+  async login(credentials: any) {
     try {
       // O backend espera form data, não JSON
       const formData = new FormData();

@@ -6,7 +6,7 @@ export const Input = ({
   type = 'text', 
   fullWidth = false,
   ...props 
-}) => {
+}: any) => {
   const inputClassName = `input ${error ? 'input-error' : ''} ${fullWidth ? 'input-full' : ''}`.trim();
   
   return (

@@ -9,7 +9,7 @@ export const Button = ({
   type = 'button',
   onClick,
   ...props 
-}) => {
+}: any) => {
   const className = `btn btn-${variant} btn-${size} ${fullWidth ? 'btn-full' : ''} ${disabled ? 'btn-disabled' : ''}`.trim();
   
   return (

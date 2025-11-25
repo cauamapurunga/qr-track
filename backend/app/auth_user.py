@@ -29,7 +29,7 @@ class UserUseCases:
         except IntegrityError:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Username or email already exists"
+                detail="Usuário ou email já está cadastrado"
             )
         return user_model   
     
@@ -41,13 +41,13 @@ class UserUseCases:
         if user_on_db is None:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Invalid username or password"
+                detail="Usuário ou senha inválidos"
             )
         
         if not bcrypt.checkpw(user.password.encode('utf-8'), user_on_db.password.encode('utf-8')):
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Invalid username or password"
+                detail="Usuário ou senha inválidos"
             )
         
         exp = datetime.utcnow() + timedelta(seconds=expires_in)

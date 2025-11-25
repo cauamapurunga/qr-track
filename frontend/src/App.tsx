@@ -4,6 +4,7 @@ import { PrivateRoute, PublicRoute } from './components/PrivateRoute';
 import { Login } from './pages/Login';
 import { Register } from './pages/Register';
 import { Dashboard } from './pages/Dashboard';
+import { Analytics } from './pages/Analytics';
 
 function App() {
   return (
@@ -35,6 +36,15 @@ function App() {
             element={
               <PrivateRoute>
                 <Dashboard />
+              </PrivateRoute>
+            } 
+          />
+          
+          <Route 
+            path="/analytics/:code" 
+            element={
+              <PrivateRoute>
+                <Analytics />
               </PrivateRoute>
             } 
           />

@@ -101,56 +101,96 @@ export const Dashboard = () => {
         <main className="dashboard-content">
           <div className="container">
             <div className="qr-creator-section">
-              <h2>Criar QR Code</h2>
+              <div className="creator-header">
+                <div className="creator-info">
+                  <h2>Criar QR Code</h2>
+                  <p>Cole a URL que deseja rastrear</p>
+                </div>
+              </div>
+
               <form onSubmit={handleCreateQrCode} className="qr-form">
-                <Input
-                  type="url"
-                  placeholder="Digite a URL de destino (ex: https://exemplo.com)"
-                  value={destinationUrl}
-                  onChange={(e: any) => setDestinationUrl(e.target.value)}
-                  disabled={loading}
-                />
-                <button type="submit" disabled={loading} className="qr-create-btn" title="Gerar QR Code">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <rect x="3" y="3" width="7" height="7" fill="currentColor" stroke="currentColor" strokeWidth="1"/>
-                    <rect x="14" y="3" width="7" height="7" fill="currentColor" stroke="currentColor" strokeWidth="1"/>
-                    <rect x="3" y="14" width="7" height="7" fill="currentColor" stroke="currentColor" strokeWidth="1"/>
-                    <rect x="5" y="5" width="3" height="3" fill="white"/>
-                    <rect x="16" y="5" width="3" height="3" fill="white"/>
-                    <rect x="5" y="16" width="3" height="3" fill="white"/>
-                    <rect x="14" y="14" width="3" height="3" fill="currentColor"/>
-                    <rect x="18" y="14" width="3" height="3" fill="currentColor"/>
-                    <rect x="14" y="18" width="3" height="3" fill="currentColor"/>
-                    <rect x="18" y="18" width="3" height="3" fill="currentColor"/>
-                  </svg>
-                </button>
+                <div className="form-group">
+                  <Input
+                    type="url"
+                    placeholder="https://seu-link.com"
+                    value={destinationUrl}
+                    onChange={(e: any) => setDestinationUrl(e.target.value)}
+                    disabled={loading}
+                  />
+                  <button type="submit" disabled={loading} className="qr-create-btn">
+                    {loading ? (
+                      <span>Gerando...</span>
+                    ) : (
+                      <>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                          <rect x="3" y="3" width="7" height="7" fill="currentColor" stroke="currentColor" strokeWidth="1"/>
+                          <rect x="14" y="3" width="7" height="7" fill="currentColor" stroke="currentColor" strokeWidth="1"/>
+                          <rect x="3" y="14" width="7" height="7" fill="currentColor" stroke="currentColor" strokeWidth="1"/>
+                          <rect x="5" y="5" width="3" height="3" fill="white"/>
+                          <rect x="16" y="5" width="3" height="3" fill="white"/>
+                          <rect x="5" y="16" width="3" height="3" fill="white"/>
+                          <rect x="14" y="14" width="3" height="3" fill="currentColor"/>
+                          <rect x="18" y="14" width="3" height="3" fill="currentColor"/>
+                          <rect x="14" y="18" width="3" height="3" fill="currentColor"/>
+                          <rect x="18" y="18" width="3" height="3" fill="currentColor"/>
+                        </svg>
+                        <span>Gerar</span>
+                      </>
+                    )}
+                  </button>
+                </div>
               </form>
               
               {error && <div className="error-message">{error}</div>}
 
               {createdQr && (
-                <Card className="qr-display">
-                  <h3>QR Code Criado!</h3>
-                  <div className="qr-image-container">
-                    <img 
-                      src={qrService.getImageUrl(createdQr.code)} 
-                      alt="QR Code"
-                      className="qr-image"
-                    />
+                <div className="qr-display-inline">
+                  <div className="qr-display-content">
+                    <div className="qr-display-image">
+                      <img 
+                        src={qrService.getImageUrl(createdQr.code)} 
+                        alt="QR Code"
+                        className="qr-image"
+                      />
+                    </div>
+                    <div className="qr-display-info">
+                      <h4>✓ QR Code Criado!</h4>
+                      <div className="info-item">
+                        <span className="label">Código:</span>
+                        <code>{createdQr.code}</code>
+                      </div>
+                      <div className="info-item">
+                        <span className="label">Destino:</span>
+                        <a href={createdQr.destination_url} target="_blank" rel="noopener noreferrer" className="url-link">
+                          {createdQr.destination_url}
+                        </a>
+                      </div>
+                      <div className="info-item full-width">
+                        <span className="label">Compartilhar:</span>
+                        <div className="share-url-container">
+                          <input 
+                            type="text" 
+                            readOnly 
+                            value={qrService.getRedirectUrl(createdQr.code)}
+                            className="share-url"
+                            onClick={(e: any) => e.target.select()}
+                          />
+                          <button 
+                            type="button"
+                            className="copy-btn"
+                            onClick={() => {
+                              const url = qrService.getRedirectUrl(createdQr.code);
+                              navigator.clipboard.writeText(url);
+                              alert('URL copiada!');
+                            }}
+                          >
+                            Copiar
+                          </button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div className="qr-info">
-                    <p><strong>Código:</strong> {createdQr.code}</p>
-                    <p><strong>Destino:</strong> {createdQr.destination_url}</p>
-                    <p><strong>URL de compartilhamento:</strong></p>
-                    <input 
-                      type="text" 
-                      readOnly 
-                      value={qrService.getRedirectUrl(createdQr.code)}
-                      className="share-url"
-                      onClick={(e: any) => e.target.select()}
-                    />
-                  </div>
-                </Card>
+                </div>
               )}
             </div>
 

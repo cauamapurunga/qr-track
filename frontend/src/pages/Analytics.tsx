@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { analyticsService, AnalyticsData } from '../services/analyticsService';
-import { Button, Card, HeatMap } from '../components';
+import { Button, Card, MapHeatMap } from '../components';
 import './Analytics.css';
 
 export const Analytics = () => {
@@ -157,18 +157,21 @@ export const Analytics = () => {
           </Card>
         </div>
 
-        <HeatMap 
-          locations={analytics.scans
-            .filter(scan => scan.latitude && scan.longitude)
-            .map(scan => ({
-              latitude: parseFloat(scan.latitude!),
-              longitude: parseFloat(scan.longitude!),
-              count: 1,
-              city: scan.city || undefined,
-              country: scan.country || undefined
-            }))
-          }
-        />
+        <Card className="heatmap-card">
+          <h2>Mapa de Calor - Localizações dos Scans</h2>
+          <MapHeatMap 
+            locations={analytics.scans
+              .filter(scan => scan.latitude && scan.longitude)
+              .map(scan => ({
+                latitude: parseFloat(scan.latitude!),
+                longitude: parseFloat(scan.longitude!),
+                count: 1,
+                city: scan.city || undefined,
+                country: scan.country || undefined
+              }))
+            }
+          />
+        </Card>
 
         <div className="analytics-details">
           <Card className="detail-card">

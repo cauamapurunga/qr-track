@@ -1,0 +1,188 @@
+.map-heatmap-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.map-container {
+  width: 100%;
+  height: 500px;
+  border: 3px solid var(--color-black);
+  box-shadow: 8px 8px 0 var(--color-black);
+  border-radius: 0;
+  overflow: hidden;
+  position: relative;
+  background-color: #f5f5f5;
+}
+
+/* Estilos do Leaflet customizados */
+.map-container :global(.leaflet-control-attribution) {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  font-size: 11px;
+  border-top: 2px solid var(--color-black);
+}
+
+.map-container :global(.leaflet-popup-content-wrapper) {
+  background-color: white;
+  border: 3px solid var(--color-black);
+  border-radius: 0;
+  box-shadow: 6px 6px 0 var(--color-black);
+  padding: 0;
+}
+
+.map-container :global(.leaflet-popup-content) {
+  margin: 12px;
+  font-size: 13px;
+  font-family: var(--font-family);
+}
+
+.map-container :global(.leaflet-popup-tip) {
+  background-color: white;
+  border-left: 3px solid var(--color-black);
+  border-right: 3px solid var(--color-black);
+  border-bottom: 3px solid var(--color-black);
+}
+
+.map-container :global(.leaflet-popup-close-button) {
+  color: var(--color-black);
+  font-weight: bold;
+  font-size: 18px;
+}
+
+/* Marcadores customizados */
+.heat-icon {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  background: none !important;
+  border: none !important;
+}
+
+.heat-marker {
+  position: relative;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.heat-marker-halo {
+  position: absolute;
+  border-radius: 50%;
+  inset: 0;
+}
+
+.heat-marker-halo-3 {
+  background-color: rgba(0, 191, 166, 0.08);
+}
+
+.heat-marker-halo-2 {
+  background-color: rgba(0, 191, 166, 0.15);
+  inset: 20%;
+}
+
+.heat-marker-halo-1 {
+  background-color: rgba(0, 191, 166, 0.25);
+  inset: 35%;
+}
+
+.heat-marker-inner {
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background-color: var(--color-primary);
+  border: 2px solid var(--color-black);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+}
+
+.heat-marker:hover {
+  transform: scale(1.15);
+}
+
+.heat-marker:hover .heat-marker-inner {
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1), 0 0 12px rgba(0, 191, 166, 0.5);
+}
+
+.heat-marker-count {
+  position: relative;
+  z-index: 2;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  user-select: none;
+  pointer-events: none;
+}
+
+.marker-popup {
+  text-align: center;
+  margin: 0;
+}
+
+.marker-popup strong {
+  color: var(--color-primary);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.marker-popup br {
+  margin: 4px 0;
+}
+
+.marker-popup small {
+  color: var(--color-gray-600);
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+}
+
+/* Controles do mapa */
+.map-container :global(.leaflet-control-zoom) {
+  border: 3px solid var(--color-black);
+  box-shadow: 6px 6px 0 var(--color-black);
+  border-radius: 0;
+  background-color: white;
+}
+
+.map-container :global(.leaflet-control-zoom-in),
+.map-container :global(.leaflet-control-zoom-out) {
+  border-bottom: 3px solid var(--color-black);
+  background-color: white;
+  color: var(--color-black);
+  font-weight: bold;
+  font-size: 16px;
+  width: 32px !important;
+  height: 32px !important;
+  line-height: 32px !important;
+  border-radius: 0;
+}
+
+.map-container :global(.leaflet-control-zoom-in:last-child) {
+  border-bottom: none;
+}
+
+.map-container :global(.leaflet-control-zoom-in:hover),
+.map-container :global(.leaflet-control-zoom-out:hover) {
+  background-color: var(--color-gray-100);
+  color: var(--color-primary);
+}
+
+/* Remove rounded corners dos controles */
+.map-container :global(.leaflet-bar) {
+  border-radius: 0 !important;
+}
+
+.map-container :global(.leaflet-control) {
+  border-radius: 0 !important;
+}
+
+@media (max-width: 768px) {
+  .map-container {
+    height: 350px;
+  }
+}
+

@@ -5,3 +5,4 @@ export { Modal } from './Modal';
 export { DeleteModal } from './DeleteModal';
 export { Logo } from './Logo';
 export { HeatMap } from './HeatMap';
+export { MapHeatMap } from './MapHeatMap';

@@ -27,12 +27,14 @@ export const qrService = {
 
   // Obter URL da imagem do QR Code
   getImageUrl: (code: string): string => {
-    return `http://127.0.0.1:8000/qr/image/${code}`;
+    const baseUrl = api.defaults.baseURL?.replace(/\/$/, '');
+    return `${baseUrl}/qr/image/${code}`;
   },
 
   // Obter URL de redirecionamento
   getRedirectUrl: (code: string): string => {
-    return `http://127.0.0.1:8000/r/${code}`;
+    const baseUrl = api.defaults.baseURL?.replace(/\/$/, '');
+    return `${baseUrl}/r/${code}`;
   },
 
   // Deletar QR Code
